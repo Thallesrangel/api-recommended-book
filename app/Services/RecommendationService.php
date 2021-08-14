@@ -31,10 +31,6 @@ class RecommendationService
 
     public function destroy($id)
     {
-        $response = $this->recommendationRepository->destroy($id);
-        
-        if ( $response ) {
-            return response()->json(['msg' => 'Success'], 200);
-        }
+        return $this->recommendationRepository->destroy($id);
     }
 }

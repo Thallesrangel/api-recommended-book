@@ -1,6 +1,7 @@
 # API REST de Recomendação de Livros
 
 ## Utilizadas
+- Docker Compose
 - Framework: Laravel
 - ORM: Eloquent
 - SGBD: MySQL
@@ -11,5 +12,5 @@ Aplicando os princípios de SOLID, padrões como Services e Repository.
 
 
 ## Documentação
-- php artisan l5-swagger:generate
+- Gerar documentação: php artisan l5-swagger:generate
 - http://localhost:8000/api/docs

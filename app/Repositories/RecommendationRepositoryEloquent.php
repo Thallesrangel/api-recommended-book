@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Recommendation;
 use App\Repositories\Contracts\RecommendationRepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class RecommendationRepositoryEloquent implements RecommendationRepositoryInterface
@@ -25,32 +26,44 @@ class RecommendationRepositoryEloquent implements RecommendationRepositoryInterf
 
     public function show($id)
     {
-        return $this->recommendation->whereId($id)
+        try{
+            return $this->recommendation->whereId($id)
                                     ->where('flag_status', "enabled")
                                     ->get();
+
+            } catch (\Exception $e){
+            throw new ModelNotFoundException('User not found');
+        }
+
+        return response()->json(['message' => 'Success'], 200);                             
     }
 
     public function store($request) : Recommendation
     {
-        return $this->recommendation->create([
-            'user_indicator' => $request->user_indicator,
-            'user_indicated' => $request->user_indicated,
-            'title' => $request->title,
-            'description' => $request->description,
-            'flag_status' => 'enabled'
-        ]);
+        try {
+            return $this->recommendation->create([
+                'user_indicator' => $request->user_indicator,
+                'user_indicated' => $request->user_indicated,
+                'title' => $request->title,
+                'description' => $request->description,
+                'flag_status' => 'enabled'
+            ]);
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages(['message' => 'Error processing.']);
+        }
     }
     
     public function destroy($id)
     {
-        $recommendation = $this->recommendation->whereId($id)->first();
+        try{
+            $recommendation = $this->recommendation->whereId($id)->first();
+            $recommendation->flag_status = 'disabled';
+            $recommendation->save();
 
-        if (!$recommendation) {
-            throw ValidationException::withMessages(['message' => 'Recommendation not found.']);
+         } catch (\Exception $e){
+            throw new ModelNotFoundException('User not found');
         }
 
-        return $recommendation->update([
-           'flag_status' => "disabled"
-        ]);
+        return response()->json(['message' => 'Success'], 200); 
     }
 }

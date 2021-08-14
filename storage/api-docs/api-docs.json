@@ -5,6 +5,66 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/recommendation": {
+            "get": {
+                "tags": [
+                    "Recommendation"
+                ],
+                "summary": "Get list recommendation",
+                "description": "Returns list of recommendation",
+                "operationId": "getAllRecommendation",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/api/recommendation/{id}": {
+            "delete": {
+                "tags": [
+                    "Recommendation"
+                ],
+                "description": "Destroy recommendation",
+                "operationId": "abd37bb3c9df5a12104e0d06797f7db6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID recommendation",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success."
+                    },
+                    "401": {
+                        "description": "permission denied ."
+                    },
+                    "404": {
+                        "description": "User not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
         "/api/user": {
             "get": {
                 "tags": [
@@ -79,7 +139,7 @@
                     "User"
                 ],
                 "description": "Destroy user",
-                "operationId": "f8d7aea516ee464d0afee90f3a1a1722",
+                "operationId": "d6a69d1ac74fd84f8cb7ea4904b2a520",
                 "parameters": [
                     {
                         "name": "id",

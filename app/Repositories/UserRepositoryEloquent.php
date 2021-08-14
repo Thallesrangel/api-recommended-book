@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class UserRepositoryEloquent implements UserRepositoryInterface
@@ -22,23 +23,35 @@ class UserRepositoryEloquent implements UserRepositoryInterface
 
     public function show($id)
     {
-        return $this->user->whereId($id)->get();
+        try{
+            return $this->user->whereId($id)
+                                    ->where('flag_status', "enabled")
+                                    ->get();
+            } catch (\Exception $e){
+            throw new ModelNotFoundException('User not found');
+        }
+
+        return response()->json(['message' => 'Success'], 200);
     }
 
     public function store($request) : user
     {
-        return $this->user->create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'flag_status' => 'enabled'
-        ]);
+        try {
+            return $this->user->create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'flag_status' => 'enabled'
+            ]); 
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages(['message' => 'Error processing.']);
+        }
     }
 
     public function update($request, $id)
     {
         try {
-            $user = $this->user->whereId($id)->update([
+            $this->user->whereId($id)->update([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email
@@ -53,14 +66,15 @@ class UserRepositoryEloquent implements UserRepositoryInterface
     
     public function destroy($id)
     {
-        $user = $this->user->whereId($id)->first();
+        try {
+            $user = $this->user->whereId($id)->first();
+            $user->flag_status = 'disabled';
+            $user->save();
 
-        if (!$user) {
-            throw ValidationException::withMessages(['message' => 'User not found.']);
+         } catch (\Exception $e){
+            throw new ModelNotFoundException('User not found');
         }
 
-        return $user->update([
-           'flag_status' => "disabled"
-        ]);
+        return response()->json(['message' => 'Success'], 200); 
     }
 }
