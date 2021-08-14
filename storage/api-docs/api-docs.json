@@ -27,6 +27,87 @@
                         "description": "Forbidden"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Recommendation"
+                ],
+                "description": "Create new recommendation",
+                "operationId": "dcefb46938ba284006320f804d14ddb4",
+                "parameters": [
+                    {
+                        "name": "user_indicator",
+                        "in": "query",
+                        "description": "ID indicator",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user_indicated",
+                        "in": "query",
+                        "description": "ID indicated",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Title of book",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success."
+                    },
+                    "422": {
+                        "description": "Bad request."
+                    }
+                }
+            }
+        },
+        "/api/recommendation/{recommendation}": {
+            "get": {
+                "tags": [
+                    "Recommendation"
+                ],
+                "description": "Return recommendation by id - enabled",
+                "operationId": "52baf9920f6aca5026fdd98b92a50b96",
+                "parameters": [
+                    {
+                        "name": "recommendation",
+                        "in": "path",
+                        "description": "ID recommendation",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success."
+                    },
+                    "422": {
+                        "description": "User not found."
+                    }
+                }
             }
         },
         "/api/recommendation/{id}": {
@@ -34,6 +115,7 @@
                 "tags": [
                     "Recommendation"
                 ],
+                "summary": "Delete recommendation by id",
                 "description": "Destroy recommendation",
                 "operationId": "abd37bb3c9df5a12104e0d06797f7db6",
                 "parameters": [
@@ -52,10 +134,13 @@
                         "description": "Success."
                     },
                     "401": {
-                        "description": "permission denied ."
+                        "description": "permission denied."
                     },
                     "404": {
                         "description": "User not found."
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity."
                     }
                 },
                 "security": [
@@ -98,7 +183,7 @@
                     {
                         "name": "first_name",
                         "in": "query",
-                        "description": "First Name",
+                        "description": "First name",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -107,7 +192,7 @@
                     {
                         "name": "last_name",
                         "in": "query",
-                        "description": "Last Name",
+                        "description": "Last name",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -128,7 +213,35 @@
                         "description": "Success."
                     },
                     "422": {
-                        "description": "Bad Request."
+                        "description": "Bad request."
+                    }
+                }
+            }
+        },
+        "/api/user/{user}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Return user by id - enabled",
+                "operationId": "a0fa3a08f20fb611866a52d1bb2e43dd",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success."
+                    },
+                    "422": {
+                        "description": "User not found."
                     }
                 }
             }
@@ -138,8 +251,9 @@
                 "tags": [
                     "User"
                 ],
+                "summary": "Delete user by id",
                 "description": "Destroy user",
-                "operationId": "d6a69d1ac74fd84f8cb7ea4904b2a520",
+                "operationId": "f8d7aea516ee464d0afee90f3a1a1722",
                 "parameters": [
                     {
                         "name": "id",
@@ -156,10 +270,13 @@
                         "description": "Success."
                     },
                     "401": {
-                        "description": "permission denied ."
+                        "description": "permission denied."
                     },
                     "404": {
                         "description": "User not found."
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity."
                     }
                 },
                 "security": [

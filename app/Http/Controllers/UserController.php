@@ -47,12 +47,31 @@ class UserController extends Controller
         return UserResource::collection($this->userService->get());
     }
 
+     /**
+     * @OA\Get(
+     *     tags={"User"},
+     *     path="/api/user/{user}",
+     *     description="Return user by id - enabled",
+     *     @OA\Parameter(
+     *         name="user",
+     *         in="path",
+     *         description="ID user",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Success."),
+     *     @OA\Response(response=422, description="User not found.")
+     * )
+    */
+
     public function show($id)
     {
         return UserResource::collection($this->userService->show($id));
     }
 
-    /**
+     /**
      * @OA\Post(
      *     tags={"User"},
      *     path="/api/user",
@@ -60,19 +79,19 @@ class UserController extends Controller
      *     @OA\Parameter(
      *         name="first_name",
      *         in="query",
-     *         description="First Name",
+     *         description="First name",
      *         required=true,
      *          @OA\Schema(
      *             type="string"
      *         )
      *     ),
-     *     @OA\Parameter(
+     *      @OA\Parameter(
      *         name="last_name",
      *         in="query",
-     *         description="Last Name",
+     *         description="Last name",
      *         required=true,
-     *         @OA\Schema(
-     *             type="string",
+     *          @OA\Schema(
+     *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
@@ -84,9 +103,8 @@ class UserController extends Controller
      *             type="string",
      *         )
      *     ),
-     *     @OA\Response(response=201, description="Success."
-     *     ),
-     *     @OA\Response(response=422, description="Bad Request.")
+     *     @OA\Response(response=201, description="Success."),
+     *     @OA\Response(response=422, description="Bad request.")
      * )
     */
 
@@ -95,9 +113,15 @@ class UserController extends Controller
         return $this->userService->store($request);
     }
 
-    /**
+    public function update(UserRequest $request, $id)
+    {
+        return $this->userService->update($request, $id);
+    }
+    
+     /**
      * @OA\Delete(
      *     tags={"User"},
+     *     summary="Delete user by id",
      *     path="/api/user/{id}",
      *     security={{"bearer_token":{}}},
      *     description="Destroy user",
@@ -111,16 +135,12 @@ class UserController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=200, description="Success."),
-     *     @OA\Response(response=401, description="permission denied ."),
-     *     @OA\Response(response=404, description="User not found.")
+     *     @OA\Response(response=401, description="permission denied."),
+     *     @OA\Response(response=404, description="User not found."),
+     *     @OA\Response(response=422, description="Unprocessable Entity."),
      * ),
     */
 
-    public function update(UserRequest $request, $id)
-    {
-        return $this->userService->update($request, $id);
-    }
-    
     public function destroy($id)
     {
         return $this->userService->destroy($id);

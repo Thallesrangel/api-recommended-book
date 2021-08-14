@@ -23,22 +23,10 @@ class RecommendationController extends Controller
      *      tags={"Recommendation"},
      *      summary="Get list recommendation",
      *      description="Returns list of recommendation",
-     *      @OA\Response(
-     *          response=200,
-     *          description="OK"
-     *       ),
-     *      @OA\Response(
-     *         response=422,
-     *         description="Missing Data"
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
+     *      @OA\Response(response=200, description="OK"),
+     *      @OA\Response(response=422, description="Missing Data"),
+     *      @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=403, description="Forbidden")
      *     )
      */
 
@@ -47,10 +35,75 @@ class RecommendationController extends Controller
         return RecommendationResource::collection($this->recommendationService->get());
     }
 
+     /**
+     * @OA\Get(
+     *     tags={"Recommendation"},
+     *     path="/api/recommendation/{recommendation}",
+     *     description="Return recommendation by id - enabled",
+     *     @OA\Parameter(
+     *         name="recommendation",
+     *         in="path",
+     *         description="ID recommendation",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Success."),
+     *     @OA\Response(response=422, description="User not found.")
+     * )
+    */
+
     public function show($id)
     {
         return RecommendationResource::collection($this->recommendationService->show($id));
     }
+
+    /**
+     * @OA\Post(
+     *     tags={"Recommendation"},
+     *     path="/api/recommendation",
+     *     description="Create new recommendation",
+     *     @OA\Parameter(
+     *         name="user_indicator",
+     *         in="query",
+     *         description="ID indicator",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="user_indicated",
+     *         in="query",
+     *         description="ID indicated",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         description="Title of book",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="description",
+     *         in="query",
+     *         description="Description",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Success."),
+     *     @OA\Response(response=422, description="Bad request.")
+     * )
+    */
 
     public function store(RecommendationRequest $request)
     {
@@ -62,9 +115,11 @@ class RecommendationController extends Controller
         return $this->recommendationService->update($request, $id);
     }
 
-    /**
+
+     /**
      * @OA\Delete(
      *     tags={"Recommendation"},
+     *     summary="Delete recommendation by id",
      *     path="/api/recommendation/{id}",
      *     security={{"bearer_token":{}}},
      *     description="Destroy recommendation",
@@ -78,9 +133,9 @@ class RecommendationController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=200, description="Success."),
-     *     @OA\Response(response=401, description="permission denied ."),
+     *     @OA\Response(response=401, description="permission denied."),
      *     @OA\Response(response=404, description="User not found."),
-     *     @OA\Response(response=422, description="Unprocessable Entity"),
+     *     @OA\Response(response=422, description="Unprocessable Entity."),
      * ),
     */
 
