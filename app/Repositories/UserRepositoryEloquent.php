@@ -34,6 +34,22 @@ class UserRepositoryEloquent implements UserRepositoryInterface
             'flag_status' => 'enabled'
         ]);
     }
+
+    public function update($request, $id)
+    {
+        try {
+            $user = $this->user->whereId($id)->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email
+            ]);
+            
+            return ['success' => true];
+
+        } catch (\Exception $error) {
+            throw ValidationException::withMessages(['message' => 'Error.']); 
+        }
+    }
     
     public function destroy($id)
     {

@@ -29,6 +29,11 @@ class UserService
         return $this->userRepository->store($request);
     }
 
+    public function update(UserRequest $request, $id)
+    {
+        return $this->userRepository->update($request, $id);
+    }
+
     public function destroy($id)
     {
         $response = $this->userRepository->destroy($id);

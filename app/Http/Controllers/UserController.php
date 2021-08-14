@@ -52,7 +52,7 @@ class UserController extends Controller
         return UserResource::collection($this->userService->show($id));
     }
 
-/**
+    /**
      * @OA\Post(
      *     tags={"User"},
      *     path="/api/user",
@@ -95,7 +95,7 @@ class UserController extends Controller
         return $this->userService->store($request);
     }
 
-     /**
+    /**
      * @OA\Delete(
      *     tags={"User"},
      *     path="/api/user/{id}",
@@ -116,6 +116,11 @@ class UserController extends Controller
      * ),
     */
 
+    public function update(UserRequest $request, $id)
+    {
+        return $this->userService->update($request, $id);
+    }
+    
     public function destroy($id)
     {
         return $this->userService->destroy($id);
