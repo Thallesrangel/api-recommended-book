@@ -114,8 +114,7 @@ class RecommendationController extends Controller
     {
         return $this->recommendationService->update($request, $id);
     }
-
-
+    
      /**
      * @OA\Delete(
      *     tags={"Recommendation"},
