@@ -29,6 +29,11 @@ class RecommendationService
         return $this->recommendationRepository->store($request);
     }
 
+    public function update(RecommendationRequest $request, $id)
+    {
+        return $this->recommendationRepository->update($request, $id);
+    }
+
     public function destroy($id)
     {
         return $this->recommendationRepository->destroy($id);

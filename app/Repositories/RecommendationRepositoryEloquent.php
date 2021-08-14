@@ -52,14 +52,28 @@ class RecommendationRepositoryEloquent implements RecommendationRepositoryInterf
             throw ValidationException::withMessages(['message' => 'Error processing.']);
         }
     }
+
+    public function update($request, $id)
+    {
+        try {
+            $this->recommendation->whereId($id)->update([
+                'title' => $request->title,
+                'description' => $request->description,
+            ]);
+            
+            return response()->json(['message' => 'Success'], 200);
+
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages(['message' => 'Error.']); 
+        }
+    }
     
     public function destroy($id)
     {
-        try{
+        try {
             $recommendation = $this->recommendation->whereId($id)->first();
             $recommendation->flag_status = 'disabled';
             $recommendation->save();
-
          } catch (\Exception $e){
             throw new ModelNotFoundException('User not found');
         }

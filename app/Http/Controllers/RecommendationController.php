@@ -57,6 +57,11 @@ class RecommendationController extends Controller
         return $this->recommendationService->store($request);
     }
 
+    public function update(RecommendationRequest $request, $id)
+    {
+        return $this->recommendationService->update($request, $id);
+    }
+
     /**
      * @OA\Delete(
      *     tags={"Recommendation"},

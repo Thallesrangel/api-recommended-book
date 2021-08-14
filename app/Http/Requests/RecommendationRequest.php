@@ -13,6 +13,13 @@ class RecommendationRequest extends FormRequest
     
     public function rules()
     {
+        if ($this->isMethod('put')) {
+            return [
+                'title' => 'required|string',
+                'description' => 'required|string'
+            ];
+        }
+
         return [
             'user_indicator' => 'required',
             'user_indicated' => 'required',

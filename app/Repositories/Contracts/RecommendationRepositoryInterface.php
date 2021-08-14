@@ -9,5 +9,6 @@ interface RecommendationRepositoryInterface
     public function get();
     public function show($id);
     public function store(RecommendationRequest $request);
+    public function update(RecommendationRequest $request, $id);
     public function destroy($id);
 }

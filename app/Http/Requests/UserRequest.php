@@ -13,10 +13,11 @@ class UserRequest extends FormRequest
     
     public function rules()
     {
-
-        if ($this->isMethod('delete')) {
+        if ($this->isMethod('put')) {
             return  [
-               'id' => 'required',
+                'first_name' => 'required|max:30',
+                'last_name' => 'required|max:30',
+                'email' => 'unique:user,email,' . $this->user
             ];
         } 
 
